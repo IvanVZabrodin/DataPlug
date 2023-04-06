@@ -76,7 +76,7 @@ class TableConnection(Connection):
         self._query(query)
 
     def addElement(self, *values) -> bool:
-        if values in self.getTable():
+        if values in [i[1:] for i in self.getTable("*")]:
             return False
         query = """INSERT INTO %s (%s) VALUES %s""" % (
             self.tablename, ','.join([col[0] for col in self.struct]), ''.join(str(values)))
