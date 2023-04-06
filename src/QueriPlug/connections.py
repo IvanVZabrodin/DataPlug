@@ -75,7 +75,10 @@ class TableConnection(Connection):
         query = """DELETE FROM %s WHERE (ID) IN (%s);""" % (self.tablename, ','.join(str(elements)))
         self._query(query)
 
-    def addElement(self, *values) -> None:
+    def addElement(self, *values) -> bool:
+        if values in self.getTable():
+            return False
         query = """INSERT INTO %s (%s) VALUES %s""" % (
             self.tablename, ','.join([col[0] for col in self.struct]), ''.join(str(values)))
         self._query(query)
+        return True
